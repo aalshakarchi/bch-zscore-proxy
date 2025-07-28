@@ -91,7 +91,7 @@ def api_docs():
                 'content_type': 'application/json',
                 'parameters': {
                     'required_fields': [
-                        'LastRegressionNum', 'HeightValue', 'WeightValue', 'AgeValue', 
+                        'HeightValue', 'WeightValue', 'AgeValue', 
                         'Context', 'Group', 'RegressionNum', 'XAxisValue', 'YAxisValue'
                     ]
                 },
@@ -115,7 +115,6 @@ def api_docs():
             }
         },
         'example_request': {
-            'LastRegressionNum': '12',
             'HeightValue': '172',
             'WeightValue': '32', 
             'AgeValue': '1',

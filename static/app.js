@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Example payload data
     const examplePayload = {
-        "LastRegressionNum": "12",
         "HeightValue": "172",
         "WeightValue": "32",
         "AgeValue": "1",
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load example data
     loadExampleBtn.addEventListener('click', function() {
         // Fill form fields
-        document.getElementById('lastRegressionNum').value = examplePayload.LastRegressionNum;
         document.getElementById('heightValue').value = examplePayload.HeightValue;
         document.getElementById('weightValue').value = examplePayload.WeightValue;
         document.getElementById('ageValue').value = examplePayload.AgeValue;
