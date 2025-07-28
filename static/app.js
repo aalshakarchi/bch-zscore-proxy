@@ -9,30 +9,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Example payload data
     const examplePayload = {
-        "LastContext": "Echo",
-        "LastGroup": "Aorta",
         "LastRegressionNum": "12",
-        "LastImperialHeightUnits": "False",
-        "LastImperialWeightUnits": "False",
-        "ImperialHeightUnits": "false",
         "HeightValue": "172",
-        "ImperialWeightUnits": "false",
         "WeightValue": "32",
         "AgeValue": "1",
         "Context": "Echo",
         "Group": "Aorta",
         "RegressionNum": "12",
         "XAxisValue": "1.11",
-        "YAxisValue": "1.2",
-        "AgeRange": "0.000 - 30.000",
-        "BSARange": "0.000 - 3.000",
-        "BMIRange": "0.000 - 30.000",
-        "InvertGraph": "false"
+        "YAxisValue": "1.2"
     };
 
     // Load example data
     loadExampleBtn.addEventListener('click', function() {
         // Fill form fields
+        document.getElementById('lastRegressionNum').value = examplePayload.LastRegressionNum;
         document.getElementById('heightValue').value = examplePayload.HeightValue;
         document.getElementById('weightValue').value = examplePayload.WeightValue;
         document.getElementById('ageValue').value = examplePayload.AgeValue;

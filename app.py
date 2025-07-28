@@ -1,5 +1,6 @@
 import os
 import logging
+import requests
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from zscore_calculator import calculate_zscore
@@ -89,10 +90,9 @@ def api_docs():
                 'description': 'Calculate Z-score using dynamic form data',
                 'content_type': 'application/json',
                 'parameters': {
-                    'dynamic': 'Any combination of form fields supported by BCH calculator',
-                    'common_fields': [
-                        'HeightValue', 'WeightValue', 'AgeValue', 'Context', 
-                        'Group', 'RegressionNum', 'XAxisValue', 'YAxisValue'
+                    'required_fields': [
+                        'LastRegressionNum', 'HeightValue', 'WeightValue', 'AgeValue', 
+                        'Context', 'Group', 'RegressionNum', 'XAxisValue', 'YAxisValue'
                     ]
                 },
                 'response': {
@@ -115,6 +115,7 @@ def api_docs():
             }
         },
         'example_request': {
+            'LastRegressionNum': '12',
             'HeightValue': '172',
             'WeightValue': '32', 
             'AgeValue': '1',
