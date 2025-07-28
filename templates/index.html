@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BCH Z-Score Calculator API</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="display-4 mb-3">
+                    <i class="fas fa-calculator text-info me-3"></i>
+                    BCH Z-Score Calculator API
+                </h1>
+                <p class="lead">
+                    REST API wrapper for the Boston Children's Hospital Z-Score Calculator with dynamic payload support
+                </p>
+            </div>
+        </div>
+
+        <!-- API Documentation -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0">
+                            <i class="fas fa-book me-2"></i>
+                            API Documentation
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <h5>Endpoint</h5>
+                        <div class="bg-dark p-3 rounded mb-3">
+                            <code class="text-info">POST /calculate-zscore</code>
+                        </div>
+
+                        <h5>Request Format</h5>
+                        <p>Send a JSON payload with any combination of form fields supported by the BCH calculator:</p>
+                        <div class="bg-dark p-3 rounded mb-3">
+                            <pre><code class="text-light">{
+  "HeightValue": "172",
+  "WeightValue": "32",
+  "AgeValue": "1",
+  "Context": "Echo",
+  "Group": "Aorta",
+  "RegressionNum": "12",
+  "XAxisValue": "1.11",
+  "YAxisValue": "1.2"
+}</code></pre>
+                        </div>
+
+                        <h5>Response Format</h5>
+                        <div class="bg-dark p-3 rounded">
+                            <pre><code class="text-light">{
+  "status": "success",
+  "data": {
+    "ZScore": "-2.5",
+    "Percentile": "0.6",
+    "5th": "0.8",
+    "50th": "1.2",
+    "95th": "1.6"
+  },
+  "message": "Z-score calculated successfully"
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Testing Interface -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="h4 mb-0">
+                            <i class="fas fa-flask me-2"></i>
+                            API Testing Interface
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="apiTestForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="heightValue" class="form-label">Height Value</label>
+                                    <input type="text" class="form-control" id="heightValue" name="HeightValue" placeholder="172">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="weightValue" class="form-label">Weight Value</label>
+                                    <input type="text" class="form-control" id="weightValue" name="WeightValue" placeholder="32">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="ageValue" class="form-label">Age Value</label>
+                                    <input type="text" class="form-control" id="ageValue" name="AgeValue" placeholder="1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="context" class="form-label">Context</label>
+                                    <input type="text" class="form-control" id="context" name="Context" placeholder="Echo">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="group" class="form-label">Group</label>
+                                    <input type="text" class="form-control" id="group" name="Group" placeholder="Aorta">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="regressionNum" class="form-label">Regression Number</label>
+                                    <input type="text" class="form-control" id="regressionNum" name="RegressionNum" placeholder="12">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="xAxisValue" class="form-label">X-Axis Value</label>
+                                    <input type="text" class="form-control" id="xAxisValue" name="XAxisValue" placeholder="1.11">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="yAxisValue" class="form-label">Y-Axis Value</label>
+                                    <input type="text" class="form-control" id="yAxisValue" name="YAxisValue" placeholder="1.2">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="customJson" class="form-label">Custom JSON Payload (optional)</label>
+                                <textarea class="form-control" id="customJson" rows="4" placeholder='{"field": "value"}'></textarea>
+                                <div class="form-text">If provided, this will override the form fields above</div>
+                            </div>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="button" class="btn btn-secondary" id="loadExample">
+                                    <i class="fas fa-clipboard me-2"></i>Load Example
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="testApiBtn">
+                                    <i class="fas fa-play me-2"></i>Test API
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Loading Indicator -->
+                        <div id="loadingIndicator" class="text-center mt-3" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Calculating Z-score...</p>
+                        </div>
+
+                        <!-- Results Display -->
+                        <div id="results" class="mt-4" style="display: none;">
+                            <h5>Results</h5>
+                            <div id="resultsContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-5 py-4 border-top">
+            <div class="text-center">
+                <p class="text-muted">
+                    <i class="fas fa-info-circle me-2"></i>
+                    This API wraps the Boston Children's Hospital Z-Score Calculator
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
