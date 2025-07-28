@@ -1,0 +1,58 @@
+import requests
+from bs4 import BeautifulSoup
+
+def calculate_zscore(form_data):
+    """
+    Posts form_data to the BCH Z-Score Calculator AJAX endpoint (root '/')
+    and parses the returned HTML to extract Z-score results.
+    form_data: dict of form field names → values, mirroring the form submission payload.
+    Returns a dict with keys: ZScore, Percentile, 5th, 50th, 95th.
+    """
+    url = "https://zscore.chboston.org/"
+    resp = requests.post(url, data=form_data)
+    resp.raise_for_status()
+
+    # Parse returned HTML fragment
+    soup = BeautifulSoup(resp.text, 'html.parser')
+    table = soup.find('table', class_='table-zscore')
+    # Extract values from the second row of the table
+    second_row = table.find_all('tr')[1]
+    cells = [td.get_text(strip=True) for td in second_row.find_all('td')]
+    zscore, percentile, p5, p50, p95 = cells
+
+    return {
+        'ZScore': zscore,
+        'Percentile': percentile,
+        '5th': p5,
+        '50th': p50,
+        '95th': p95
+    }
+
+# Example usage:
+if __name__ == "__main__":
+    payload = {
+        "LastContext":             "Echo",
+        "LastGroup":               "Aorta",
+        "LastRegressionNum":       "12",
+        "LastImperialHeightUnits": "False",
+        "LastImperialWeightUnits": "False",
+        "ImperialHeightUnits":     "false",
+        "HeightValue":             "172",
+        "ImperialWeightUnits":     "false",
+        "WeightValue":             "32",
+        "AgeValue":                "1",
+        # "BSAValue":                "1.11",
+        # "BMIValue":                "16.1",
+        "Context":                 "Echo",
+        "Group":                   "Aorta",
+        "RegressionNum":           "12",
+        "XAxisValue":              "1.11",
+        "YAxisValue":              "1.2",
+        "AgeRange":                "0.000 - 30.000",
+        "BSARange":                "0.000 - 3.000",
+        "BMIRange":                "0.000 - 30.000",
+        "InvertGraph":             "false"
+    }
+
+    results = calculate_zscore(payload)
+    print("Results:", results['ZScore'])
